@@ -16,17 +16,17 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: ctions/setup-python@v5
+        uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
       - name: Install deps
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          pip install -r python-ci-docker-lab/requirements.txt
 
       - name: Run tests
-        run: pytest -q tests
+        run: pytest -q python-ci-docker-lab/tests
 
       - name: Docker meta
         id: meta
@@ -50,14 +50,20 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Debug - list files
-        run: ls -la
+      - name: Debug workspace
+        run: |
+          echo "PWD:"
+          pwd
+          echo "Files:"
+          ls -la
+          echo "python-ci-docker-lab:"
+          ls -la python-ci-docker-lab
 
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
-          context: .            # repo root
-          file: ./Dockerfile    # Dockerfile at root
+          context: ./python-ci-docker-lab
+          file: ./python-ci-docker-lab/Dockerfile
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
