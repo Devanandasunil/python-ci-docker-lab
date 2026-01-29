@@ -53,8 +53,8 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
-          context: ./python-ci-docker-lab        # folder containing your Dockerfile
-          file: ./python-ci-docker-lab/Dockerfile  # explicitly specify Dockerfile
+          context: ./python-ci-docker-lab       # folder containing your Dockerfile
+          file: ./python-ci-docker-lab/Dockerfile  # explicitly specify the Dockerfile
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
