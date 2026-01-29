@@ -23,10 +23,10 @@ jobs:
       - name: Install deps
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          pip install -r python-ci-docker-lab/requirements.txt
 
       - name: Run tests
-        run: pytest -q
+        run: pytest -q python-ci-docker-lab/tests
 
       - name: Docker meta
         id: meta
@@ -53,7 +53,8 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
-          context: .
+          context: ./python-ci-docker-lab        # folder containing your Dockerfile
+          file: ./python-ci-docker-lab/Dockerfile  # explicitly specify Dockerfile
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
